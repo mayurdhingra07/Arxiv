@@ -42,7 +42,7 @@ if os.getenv("OPENAI_API_KEY"):
         contexts_text = [context['summary'] for context in contexts]
         extended_input = user_input + '  ' + '  '.join(contexts_text)
         response = arxiv_chat_bot.chat(extended_input)
-        st.session_state.chat_history.appendleft((extended_input, response))
+        st.session_state.chat_history.appendleft((user_input, response))
 
     # Display the chat history
     for user_msg, bot_msg in reversed(st.session_state.chat_history):
