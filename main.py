@@ -9,8 +9,7 @@ from embedstore.rag.retrievers import EmbedStoreRetriever
 # Initialize the retriever
 arxiv_retriever = EmbedStoreRetriever(dataset_id = "arxiv_01", num_docs=3)
 
-# Set the OpenAI API key
-@st.cache(allow_output_mutation=True)
+@st.cache_data(allow_output_mutation=True)
 def set_api_key(api_key):
     os.environ["OPENAI_API_KEY"] = api_key
 
@@ -39,10 +38,12 @@ if os.getenv("OPENAI_API_KEY"):
 
     if st.button("Send"):
         contexts = arxiv_retriever.query(user_input)
-        # Concatenate the contexts to the user's prompt
-        extended_input = user_input + '  ' + '  '.join(contexts)
+        # Assume the text data is in a key called 'text' in each dictionary
+        contexts_text = [context['text'] for context in contexts]
+        extended_input = user_input + '  ' + '  '.join(contexts_text)
         response = arxiv_chat_bot.chat(extended_input)
-        st.session_state.chat_history.appendleft((user_input, response))
+        st.session_state.chat_history.appendleft((extended_input, response))
+
 
     # Display the chat history
     for user_msg, bot_msg in reversed(st.session_state.chat_history):
