@@ -9,7 +9,6 @@ from embedstore.rag.retrievers import EmbedStoreRetriever
 # Initialize the retriever
 arxiv_retriever = EmbedStoreRetriever(dataset_id = "arxiv_01", num_docs=3)
 
-@st.cache_data(allow_output_mutation=True)
 def set_api_key(api_key):
     os.environ["OPENAI_API_KEY"] = api_key
 
