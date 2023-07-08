@@ -37,11 +37,13 @@ if os.getenv("OPENAI_API_KEY"):
 
     if st.button("Send"):
         contexts = arxiv_retriever.query(user_input)
-        # Assume the text data is in a key called 'text' in each dictionary
+        st.write(contexts)  # Debug line: display the contexts in the Streamlit app
+        # Now, replace 'text' with the correct key in your dictionaries
         contexts_text = [context['text'] for context in contexts]
         extended_input = user_input + '  ' + '  '.join(contexts_text)
         response = arxiv_chat_bot.chat(extended_input)
         st.session_state.chat_history.appendleft((extended_input, response))
+
 
 
     # Display the chat history
