@@ -33,11 +33,11 @@ if os.getenv("OPENAI_API_KEY"):
         contexts = arxiv_retriever.query(user_input)
         contexts_text = [context['summary'] for context in contexts]
         extended_input = user_input + ' '.join(contexts_text)
-        response = arxiv_chat_bot.chat(extended_input)
+        response = arxiv_chat_bot.chat(extended_input[:3000]) # Truncate input to respect model's token limit
         st.session_state.chat_history.appendleft((user_input, response))
 
     for i, (user_msg, bot_msg) in enumerate(reversed(st.session_state.chat_history)):
-        col1, col2 = st.beta_columns(2)
+        col1, col2 = st.columns(2) # Changed from st.beta_columns(2)
         with col1:
             st.markdown(f"> **User**: {user_msg}", unsafe_allow_html=True)
         with col2:
