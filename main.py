@@ -38,11 +38,11 @@ if os.getenv("OPENAI_API_KEY"):
         st.session_state.chat_history = deque([], maxlen=5)
 
     if st.button("Send"):
-    contexts = arxiv_retriever.query(user_input)
-    # Concatenate the contexts to the user's prompt
-    extended_input = user_input + '  ' + '  '.join(contexts)
-    response = arxiv_chat_bot.chat(extended_input)
-    st.session_state.chat_history.appendleft((user_input, response))
+        contexts = arxiv_retriever.query(user_input)
+        # Concatenate the contexts to the user's prompt
+        extended_input = user_input + '  ' + '  '.join(contexts)
+        response = arxiv_chat_bot.chat(extended_input)
+        st.session_state.chat_history.appendleft((user_input, response))
 
     # Display the chat history
     for user_msg, bot_msg in reversed(st.session_state.chat_history):
