@@ -3,6 +3,12 @@ from collections import deque
 import streamlit as st
 from embedchain import App
 
+os.environ["EMBEDSTORE_API_KEY"] = "V7x2LVMb4N"
+from embedstore.rag.retrievers import EmbedStoreRetriever
+
+# Initialize the retriever
+arxiv_retriever = EmbedStoreRetriever(dataset_id = "arxiv_01", num_docs=3)
+
 # Set the OpenAI API key
 @st.cache(allow_output_mutation=True)
 def set_api_key(api_key):
@@ -32,8 +38,11 @@ if os.getenv("OPENAI_API_KEY"):
         st.session_state.chat_history = deque([], maxlen=5)
 
     if st.button("Send"):
-        response = arxiv_chat_bot.chat(user_input)
-        st.session_state.chat_history.appendleft((user_input, response))
+    contexts = arxiv_retriever.query(user_input)
+    # Concatenate the contexts to the user's prompt
+    extended_input = user_input + '  ' + '  '.join(contexts)
+    response = arxiv_chat_bot.chat(extended_input)
+    st.session_state.chat_history.appendleft((user_input, response))
 
     # Display the chat history
     for user_msg, bot_msg in reversed(st.session_state.chat_history):
