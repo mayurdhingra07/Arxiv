@@ -3,7 +3,7 @@ from collections import deque
 import streamlit as st
 from embedchain import App
 
-os.environ["EMBEDSTORE_API_KEY"] = V7x2LVMb4N
+os.environ["EMBEDSTORE_API_KEY"] = "V7x2LVMb4N"
 from embedstore.rag.retrievers import EmbedStoreRetriever
 
 # Initialize the retriever
